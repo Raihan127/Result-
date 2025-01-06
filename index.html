@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Result</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #d4e9ff, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: #A52A2A;
+      margin-bottom: 20px;
+    }
+    .logo span {
+      color: #0056b3;
+    }
+    h4 {
+      font-size: 16px;
+      margin: 10px 0;
+      color: #333;
+    }
+    input[type="number"] {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      display: none;
+      padding: 20px;
+      border-radius: 20px;
+      background: linear-gradient(to bottom, #d4e9ff, #ffffff); /* Same as body background */
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    .result table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 15px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .result table th,
+    .result table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      font-size: 14px;
+    }
+    .result table th {
+      background-color: #007bff;
+      color: white;
+    }
+    .result table td {
+      background-color: #f9f9f9;
+      font-weight: normal;
+    }
+    .result table td.bold {
+      font-weight: bold;
+    }
+    .highlight-light {
+      background-color: #f0f8ff;
+    }
+    .highlight-green {
+      background-color: #eafaf1;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Logo -->
+    <div class="logo">Varendra <span>University</span></div>
+
+    <!-- Search Section -->
+    <h4>Search Results by ID Number</h4>
+    <input type="number" id="rollInput" placeholder="Enter ID Number">
+    <button onclick="searchResult()">Search</button>
+
+    <!-- Result Section -->
+    <div class="result" id="resultSection">
+      <h3>Result Details</h3>
+      <table>
+        <tr>
+          <th>Category</th>
+          <th>Details</th>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td id="name"></td>
+        </tr>
+        <tr>
+          <td>ID</td>
+          <td id="roll"></td>
+        </tr>
+        <tr>
+          <td>Section</td>
+          <td id="section"></td>
+        </tr>
+        <tr>
+          <td>CGPA</td>
+          <td id="cgpa" class="bold"></td>
+        </tr>
+        <tr>
+          <td>CSE</td>
+          <td id="cse"></td>
+        </tr>
+        <tr>
+          <td>CSE Lab</td>
+          <td id="cseLab"></td>
+        </tr>
+        <tr>
+          <td>Discrete Math</td>
+          <td id="discreteMath"></td>
+        </tr>
+        <tr>
+          <td>EEE</td>
+          <td id="eee"></td>
+        </tr>
+        <tr>
+          <td>EEE Lab</td>
+          <td id="eeeLab"></td>
+        </tr>
+        <tr>
+          <td>Math</td>
+          <td id="math"></td>
+        </tr>
+        <tr>
+          <td>Chemistry</td>
+          <td id="chemistry"></td>
+        </tr>
+        <tr>
+          <td>Chemistry Lab</td>
+          <td id="chemistryLab"></td>
+        </tr>
+        <tr class="highlight-light">
+          <td>1st Semester CGPA</td>
+          <td id="sem1"></td>
+        </tr>
+        <tr class="highlight-light">
+          <td>2nd Semester CGPA</td>
+          <td id="sem2"></td>
+        </tr>
+        <tr class="highlight-green">
+          <td>Final CGPA</td>
+          <td id="finalCgpa"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 Abu Raihan. All rights reserved.</div>
+  </div>
+
+  <script>
+    
+    
+    // Mock Results Data
+    const results = {
+    
+    // A Section 
+   "241311001": {
+    name: "KHADIZATUL KUBRA", roll: "241311001", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A-", discreteMath: "B+", eee: "A", eeeLab: "A-",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 2.79, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311002": {
+    name: "MST. TASNIM SULTANA", roll: "241311002", section: "A", cgpa: 3.8,
+    cse: "A", cseLab: "B", discreteMath: "B+", eee: "A-", eeeLab: "A",
+    math: "B-", chemistry: "B+", chemistryLab: "A-",
+    sem1: 4.00, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311003": {
+    name: "HUMAIRA JAHAN RAWNAK", roll: "241311003", section: "A", cgpa: 3.7,
+    cse: "B+", cseLab: "B", discreteMath: "A-", eee: "A", eeeLab: "B+",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 3.82, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311004": {
+    name: "MD. AL MAHFUZ", roll: "241311004", section: "A", cgpa: 4.0,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 2.51, sem2: 4.0, finalCgpa: 4.0
+  },
+  "241311005": {
+    name: "TUSHAR BASAK", roll: "241311005", section: "A", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B+", eee: "B", eeeLab: "A-",
+    math: "C+", chemistry: "B", chemistryLab: "B+",
+    sem1: 3.43, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311006": {
+    name: "MST. MAKSUDA JAMAN MEGHLA", roll: "241311006", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "B+", chemistryLab: "A-",
+    sem1: 3.76, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311007": {
+    name: "JANNATUL FERDOUS MUKTA", roll: "241311007", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B+", discreteMath: "B", eee: "A-", eeeLab: "A-",
+    math: "C", chemistry: "B", chemistryLab: "B+",
+    sem1: 2.52, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311009": {
+    name: "MD. ZAKI BILLAH AL MAHADE", roll: "241311009", section: "A", cgpa: 3.6,
+    cse: "B+", cseLab: "B", discreteMath: "B", eee: "B+", eeeLab: "A-",
+    math: "C", chemistry: "B-", chemistryLab: "B",
+    sem1: 3.35, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311010": {
+    name: "MOST ZUBAIDA RAHMAN", roll: "241311010", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "A-", discreteMath: "B+", eee: "A-", eeeLab: "A-",
+    math: "B-", chemistry: "A", chemistryLab: "A",
+    sem1: 3.26, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311011": {
+    name: "ANAM MD. NAHIN", roll: "241311011", section: "A", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "B+", eee: "A", eeeLab: "A-",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 2.81, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311012": {
+    name: "SHRABONI ACHARJEE", roll: "241311012", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B+", discreteMath: "A-", eee: "A-", eeeLab: "A",
+    math: "C+", chemistry: "B", chemistryLab: "B+",
+    sem1: 3.07, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311013": {
+    name: "ABDUL-AL NAHEED QAIUM", roll: "241311013", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A-", eeeLab: "A",
+    math: "B", chemistry: "B+", chemistryLab: "A-",
+    sem1: 3.94, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311015": {
+    name: "RIFAT ZAHAN MERI", roll: "241311015", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B+", discreteMath: "A", eee: "A-", eeeLab: "A-",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 2.72, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311016": {
+    name: "MD. SARWAR JAHAN RIMON", roll: "241311016", section: "A", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "B+", eee: "A", eeeLab: "A",
+    math: "B-", chemistry: "B+", chemistryLab: "A",
+    sem1: 2.58, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311017": {
+    name: "MOHD. SABBIR SEKENDER SANY", roll: "241311017", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 2.96, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311018": {
+    name: "MST. PAPIYA KHATUN", roll: "241311018", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B+", discreteMath: "B", eee: "B+", eeeLab: "A-",
+    math: "C+", chemistry: "B", chemistryLab: "B+",
+    sem1: 3.54, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311019": {
+    name: "MOST FAHMIDA RAHMAN", roll: "241311019", section: "A", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B+", eee: "B", eeeLab: "B+",
+    math: "C", chemistry: "B-", chemistryLab: "B",
+    sem1: 2.94, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311020": {
+    name: "RIFA TAKIAH", roll: "241311020", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.50, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311021": {
+    name: "MD. HABIBULLAH", roll: "241311021", section: "A", cgpa: 3.8,
+    cse: "A", cseLab: "B+", discreteMath: "A-", eee: "A-", eeeLab: "A",
+    math: "B-", chemistry: "B+", chemistryLab: "A-",
+    sem1: 1.15, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311022": {
+    name: "MST. RAZIASULTANA", roll: "241311022", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "B", eee: "B+", eeeLab: "A-",
+    math: "C+", chemistry: "B-", chemistryLab: "B",
+    sem1: 2.55, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311023": {
+    name: "MOST. AFROSE MOSTARI", roll: "241311023", section: "A", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "B+", chemistryLab: "A-",
+    sem1: 3.88, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311024": {
+    name: "MST. KANIZ MAHMUDA MOW", roll: "241311024", section: "A", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B-", eee: "B", eeeLab: "B+",
+    math: "C", chemistry: "B", chemistryLab: "C",
+    sem1: 3.18, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311025": {
+    name: "MAHAFUZA KHATUN", roll: "241311025", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.02, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311026": {
+    name: "SANJIDA ISLAM", roll: "241311026", section: "A", cgpa: 3.8,
+    cse: "A-", cseLab: "A", discreteMath: "B+", eee: "A", eeeLab: "A-",
+    math: "B", chemistry: "B", chemistryLab: "A-",
+    sem1: 3.98, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311027": {
+    name: "MD. ABU YOUSUF", roll: "241311027", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "B+", eee: "A-", eeeLab: "B+",
+    math: "B", chemistry: "B", chemistryLab: "B",
+    sem1: 1.89, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311028": {
+    name: "MD. EMRAN ALIF", roll: "241311028", section: "A", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C+", chemistry: "B", chemistryLab: "C+",
+    sem1: 0.14, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311029": {
+    name: "MD. JAHIDUL ISLAM", roll: "241311029", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A-", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "A",
+    sem1: 3.72, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311030": {
+    name: "MD. NASIM BABU", roll: "241311030", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B+", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "B-", chemistry: "B", chemistryLab: "A-",
+    sem1: 3.07, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311032": {
+    name: "MOST. ROHIMA KHATUN ZISA", roll: "241311032", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "B", eee: "B+", eeeLab: "A-",
+    math: "B", chemistry: "B", chemistryLab: "B",
+    sem1: 3.96, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311033": {
+    name: "PREYONTY RANI ADHIKARY", roll: "241311033", section: "A", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B-", eee: "C+", eeeLab: "B",
+    math: "C", chemistry: "B-", chemistryLab: "C",
+    sem1: 3.77, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311034": {
+    name: "MD. MASUD RANA", roll: "241311034", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 0.70, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311035": {
+    name: "MS. SABIA KHATUN ROTNA", roll: "241311035", section: "A", cgpa: 3.8,
+    cse: "A-", cseLab: "B+", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 3.03, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311036": {
+    name: "MONOWER HOSSAIN", roll: "241311036", section: "A", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "A", eee: "A-", eeeLab: "A-",
+    math: "B-", chemistry: "B+", chemistryLab: "A-",
+    sem1: 3.20, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311037": {
+    name: "MD. SHAKIL MONDAL", roll: "241311037", section: "A", cgpa: 3.6,
+    cse: "B+", cseLab: "B-", discreteMath: "B", eee: "B", eeeLab: "C+",
+    math: "C", chemistry: "B", chemistryLab: "C",
+    sem1: 2.16, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311038": {
+    name: "SUPRIA MAJUMDER", roll: "241311038", section: "A", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A-",
+    math: "A-", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.45, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311039": {
+    name: "SHIBLY SADIK", roll: "241311039", section: "A", cgpa: 3.8,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A-",
+    math: "B", chemistry: "A-", chemistryLab: "B+",
+    sem1: 2.32, sem2: 3.9, finalCgpa: 3.8
+  },
+ 
+  
+  // B Section 
+  "241311041": {
+    name: "MD. TANVIR RANA AKASH", roll: "241311041", section: "B", cgpa: 3.7,
+    cse: "A", cseLab: "B", discreteMath: "A-", eee: "B+", eeeLab: "A",
+    math: "A-", chemistry: "B", chemistryLab: "B",
+    sem1: 1.57, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311042": {
+    name: "MD. YASIR ARAFAT HIMEL", roll: "241311042", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "B+", eee: "A", eeeLab: "A-",
+    math: "A", chemistry: "B", chemistryLab: "A-",
+    sem1: 3.63, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311043": {
+    name: "MST. FAHMIDA BINTA KADIR", roll: "241311043", section: "B", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B", eee: "B-", eeeLab: "B",
+    math: "C+", chemistry: "B-", chemistryLab: "C",
+    sem1: 2.90, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311044": {
+    name: "MD. UJAIR HOSSAIN ANTOR", roll: "241311044", section: "B", cgpa: 3.8,
+    cse: "A-", cseLab: "A", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A-",
+    sem1: 2.60, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311045": {
+    name: "MOST. NISHAT TASNIM", roll: "241311045", section: "B", cgpa: 3.7,
+    cse: "B", cseLab: "A", discreteMath: "B+", eee: "B", eeeLab: "A-",
+    math: "B", chemistry: "B", chemistryLab: "B+",
+    sem1: 3.46, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311047": {
+    name: "MD. ABDULLAH AL SAIF", roll: "241311047", section: "B", cgpa: 3.8,
+    cse: "A-", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.77, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311048": {
+    name: "MD. FARDIN RAHAMAN", roll: "241311048", section: "B", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.34, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311049": {
+    name: "MST. SADIA AKTER MUNIA", roll: "241311049", section: "B", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B", eee: "B-", eeeLab: "B+",
+    math: "C+", chemistry: "B", chemistryLab: "C",
+    sem1: 2.46, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311050": {
+    name: "MST. SONIYA AKTER", roll: "241311050", section: "B", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "A", eee: "A-", eeeLab: "B+",
+    math: "B", chemistry: "A-", chemistryLab: "B",
+    sem1: 3.53, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311051": {
+    name: "ABDULLAH ATIF", roll: "241311051", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A", eeeLab: "A-",
+    math: "A-", chemistry: "A", chemistryLab: "A-",
+    sem1: 3.12, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311052": {
+    name: "HABIBATUL KOBRA", roll: "241311052", section: "B", cgpa: 3.7,
+    cse: "B", cseLab: "A-", discreteMath: "B+", eee: "A", eeeLab: "A",
+    math: "B-", chemistry: "A-", chemistryLab: "B",
+    sem1: 3.57, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311053": {
+    name: "MD. SAIBUR RAHMAN", roll: "241311053", section: "B", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.26, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311054": {
+    name: "MD. NAIMUL ISLAM", roll: "241311054", section: "B", cgpa: 3.6,
+    cse: "B-", cseLab: "B", discreteMath: "C", eee: "B-", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "C",
+    sem1: 0.43, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311055": {
+    name: "MOSTAKIM MAUN", roll: "241311055", section: "B", cgpa: 3.7,
+    cse: "A-", cseLab: "A-", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A-",
+    sem1: 0.11, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311056": {
+    name: "MD. OAHADUR RAHMAN EVU", roll: "241311056", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "B", chemistryLab: "A-",
+    sem1: 3.22, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311057": {
+    name: "YALMAI LUMIA", roll: "241311057", section: "B", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.52, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311058": {
+    name: "MD. ABDULLAH AL MAHFUZ", roll: "241311058", section: "B", cgpa: 3.6,
+    cse: "B-", cseLab: "C", discreteMath: "B-", eee: "C", eeeLab: "B-",
+    math: "B", chemistry: "B", chemistryLab: "C",
+    sem1: 3.42, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311059": {
+    name: "NISHAT- TABASSUM PROMI", roll: "241311059", section: "B", cgpa: 3.8,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "B", chemistryLab: "A",
+    sem1: 2.62, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311060": {
+    name: "MST. FARHANA JAHAN", roll: "241311060", section: "B", cgpa: 3.7,
+    cse: "B", cseLab: "A-", discreteMath: "A", eee: "B+", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A-",
+    sem1: 3.54, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311062": {
+    name: "PROTTOY SARKER", roll: "241311062", section: "B", cgpa: 3.6,
+    cse: "B-", cseLab: "B", discreteMath: "C", eee: "B", eeeLab: "C",
+    math: "B", chemistry: "C", chemistryLab: "B",
+    sem1: 2.64, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311063": {
+    name: "MD RIFAT ALI", roll: "241311063", section: "B", cgpa: 3.8,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.03, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311064": {
+    name: "MD. ASEF AL MUHAIMEN", roll: "241311064", section: "B", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "B+", eee: "A-", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A-",
+    sem1: 0.78, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311065": {
+    name: "MD. SHAHED UDDIN", roll: "241311065", section: "B", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.57, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311066": {
+    name: "MD. SAMIUL ISLAM", roll: "241311066", section: "B", cgpa: 3.6,
+    cse: "B", cseLab: "B-", discreteMath: "B", eee: "B", eeeLab: "C",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 1.10, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311067": {
+    name: "MD. JAED HOSSAIN", roll: "241311067", section: "B", cgpa: 3.8,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "A",
+    sem1: 1.94, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311068": {
+    name: "MAHIR ASIF SIZAN", roll: "241311068", section: "B", cgpa: 3.7,
+    cse: "B+", cseLab: "A-", discreteMath: "A", eee: "A-", eeeLab: "B+",
+    math: "A-", chemistry: "B", chemistryLab: "B",
+    sem1: 2.88, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311069": {
+    name: "ABDUS SOBHAN", roll: "241311069", section: "B", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B-", eee: "B-", eeeLab: "B",
+    math: "C", chemistry: "C", chemistryLab: "B",
+    sem1: 2.66, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311070": {
+    name: "SABBIR AHMED SHAMEEM", roll: "241311070", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A-",
+    sem1: 3.96, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311071": {
+    name: "DANIEL ROZARIO", roll: "241311071", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "B+", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "B+",
+    sem1: 3.26, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311072": {
+    name: "TAIAB BIN KABIR", roll: "241311072", section: "B", cgpa: 3.7,
+    cse: "B+", cseLab: "A-", discreteMath: "A", eee: "B", eeeLab: "A",
+    math: "B+", chemistry: "A", chemistryLab: "B",
+    sem1: 2.61, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311074": {
+    name: "NAFISA SAMA JAMY", roll: "241311074", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "A",
+    sem1: 2.91, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311075": {
+    name: "MD. ATIQUR RAHMAN", roll: "241311075", section: "B", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "A-", eee: "B+", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "B",
+    sem1: 2.41, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311076": {
+    name: "MD. RAJIN SARKAR RAFI", roll: "241311076", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.91, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311077": {
+    name: "A.M.M NAKIBUL ISLAM SIDDIQUE", roll: "241311077", section: "B", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "A", eee: "B", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.96, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311078": {
+    name: "MD. MEHRAB HOSEN", roll: "241311078", section: "B", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 1.80, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311079": {
+    name: "MEHEDI HASAN", roll: "241311079", section: "B", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "A",
+    sem1: 1.14, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311080": {
+    name: "MD. HABIBUR RAHMAN", roll: "241311080", section: "B", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 0.99, sem2: 3.9, finalCgpa: 3.9
+  },
+    
+    
+   // C Section
+   "241311081": {
+    name: "S. M. AKIFUR RAHMAN", roll: "241310081", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.52, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311082": {
+    name: "ASMA-UL-HUSNA", roll: "241310082", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 1.98, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311083": {
+    name: "MST. RIJUANA PARVIN RIJU", roll: "241310083", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "B", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.31, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311084": {
+    name: "MD. REZWAN ISLAM", roll: "241310084", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.46, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311085": {
+    name: "EMAM HOSSAIN", roll: "241310085", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "C", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 2.89, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311086": {
+    name: "MD. TOHIDUL ISLAM", roll: "241310086", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.14, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311089": {
+    name: "MD. ABDUL MOIN", roll: "241310089", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A", chemistryLab: "A-",
+    sem1: 3.15, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311090": {
+    name: "MD. SIAMUL HASAN NAHID", roll: "241310090", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.72, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311091": {
+    name: "MOST. RUBAIYA NURA JANNAT", roll: "241310091", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A", chemistryLab: "A",
+    sem1: 3.70, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311092": {
+    name: "MD. SAKIB HOSSAIN", roll: "241310092", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.28, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311093": {
+    name: "MD. KOFI AHMMED", roll: "241310093", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 3.07, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311094": {
+    name: "SADEKATUL SHIHAB", roll: "241310094", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.71, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311095": {
+    name: "PARVEJ HASAN SAWON", roll: "241310095", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.45, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311096": {
+    name: "G. M. MURSALIN", roll: "241310096", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 2.93, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311097": {
+    name: "ASIF SHAHARIAR ABDULLAH", roll: "241310097", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.16, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311098": {
+    name: "MAHFUJA FARIHA", roll: "241310098", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.66, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311099": {
+    name: "MD. SIAM-UZZAMAN", roll: "241310099", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "C", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 1.36, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311100": {
+    name: "MST NAIMA KHANAM", roll: "241310100", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.27, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311101": {
+    name: "ISRAT JAHAN AURIN", roll: "241310101", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.90, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311102": {
+    name: "MD. MUSHFIQ ALAM", roll: "241310102", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 2.04, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311103": {
+    name: "MOHTASIM ASHEF", roll: "241310103", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.48, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311104": {
+    name: "MOHD. SAKHAWAT HOSSAIN", roll: "241310104", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.76, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311105": {
+    name: "MD. ABU RADDAD ZISAN", roll: "241310105", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 0.65, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311106": {
+    name: "SARKAR MD. MAHDIAL ISLAM SPONDON", roll: "241310106", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.76, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311107": {
+    name: "MD. RAFI AHAMMED", roll: "241310107", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.99, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311108": {
+    name: "MD. NASIM SARKER", roll: "241310108", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 2.08, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311109": {
+    name: "DIPANWITA MAITRA", roll: "241310109", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.42, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311110": {
+    name: "AHSAN TANVIR JOY", roll: "241310110", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.21, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311111": {
+    name: "ABID AHMAD RAZEEN", roll: "241310111", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.03, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311112": {
+    name: "MD. NAIM SIDDIKI", roll: "241310112", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.31, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311113": {
+    name: "MD. TAUFIK - AL - UDDAN", roll: "241310113", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 1.20, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311114": {
+    name: "MOST. MUSLIMA KHATUN", roll: "241310114", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 2.18, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311116": {
+    name: "MD. SHAFIUL HASAN SIMANTO", roll: "241310116", section: "C", cgpa: 3.6,
+    cse: "B", cseLab: "B", discreteMath: "B", eee: "B", eeeLab: "B",
+    math: "C", chemistry: "B", chemistryLab: "B",
+    sem1: 3.72, sem2: 3.7, finalCgpa: 3.6
+  },
+  "241311117": {
+    name: "SAKILA JANNAT JUI", roll: "241310117", section: "C", cgpa: 3.7,
+    cse: "A-", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.90, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311118": {
+    name: "MST. SANZIDA ROKHSANA MIM", roll: "241310118", section: "C", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 2.37, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311119": {
+    name: "MD. SIFAT HOSSAIN HIMEL", roll: "241310119", section: "C", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "B", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.43, sem2: 3.8, finalCgpa: 3.7
+  },
+
+
+      
+   // D Section
+   "241311121": {
+    name: "SUMONA ANZUM", roll: "241311121", section: "D", cgpa: 3.16,
+    cse: "C+", cseLab: "C", discreteMath: "B+", eee: "B-", eeeLab: "A+",
+    math: "A+", chemistry: "A-", chemistryLab: "A-",
+    sem1: 2.89, sem2: 3.16, finalCgpa: 3.02
+  },
+  "241311122": {
+    name: "NUR MOHAMMAD ALI SWEET", roll: "241311122", section: "D", cgpa: 3.09,
+    cse: "C", cseLab: "C", discreteMath: "B+", eee: "B", eeeLab: "A",
+    math: "A-", chemistry: "A-", chemistryLab: "A+",
+    sem1: 2.95, sem2: 3.09, finalCgpa: 3.02
+  },
+  "241311124": {
+    name: "SHUVO KUMAR", roll: "241311124", section: "D", cgpa: 1.56,
+    cse: "F", cseLab: "D", discreteMath: "D", eee: "F", eeeLab: "A",
+    math: "C", chemistry: "D", chemistryLab: "A",
+    sem1: 2.51, sem2: 1.56, finalCgpa: 2.03
+  },
+  "241311125": {
+    name: "KUMARI BORSHA RANI KUNDU", roll: "241311125", section: "D", cgpa: 2.99,
+    cse: "C", cseLab: "B-", discreteMath: "A-", eee: "C+", eeeLab: "A+",
+    math: "B", chemistry: "B+", chemistryLab: "A+",
+    sem1: 3.18, sem2: 2.99, finalCgpa: 3.08
+  },
+  "241311127": {
+    name: "MD. ABU RAIHAN", roll: "241311127", section: "D", cgpa: 3.32,
+    cse: "C", cseLab: "B-", discreteMath: "A+", eee: "A-", eeeLab: "A+",
+    math: "A", chemistry: "B", chemistryLab: "A-",
+    sem1: 3.41, sem2: 3.32, finalCgpa: 3.36
+  },
+  "241311128": {
+    name: "ABDULLAH AL MAMUN", roll: "241311128", section: "D", cgpa: 2.79,
+    cse: "D", cseLab: "D", discreteMath: "B-", eee: "C+", eeeLab: "A",
+    math: "A-", chemistry: "B", chemistryLab: "A",
+    sem1: 2.73, sem2: 2.79, finalCgpa: 2.76
+  },
+  "241311129": {
+    name: "BORNITA GHOSH", roll: "241311129", section: "D", cgpa: 3.51,
+    cse: "C", cseLab: "B-", discreteMath: "A", eee: "A", eeeLab: "A+",
+    math: "A+", chemistry: "A+", chemistryLab: "A+",
+    sem1: 3.47, sem2: 3.51, finalCgpa: 3.49
+  },
+  "241311130": {
+    name: "FARZANA HOQUE ZIM", roll: "241311130", section: "D", cgpa: 3.59,
+    cse: "B", cseLab: "B+", discreteMath: "A-", eee: "A-", eeeLab: "A+",
+    math: "A+", chemistry: "A+", chemistryLab: "A+",
+    sem1: 3.82, sem2: 3.59, finalCgpa: 3.7
+  },
+  "241311131": {
+    name: "SURAIYA SHARMIN", roll: "241311131", section: "D", cgpa: 3.06,
+    cse: "D", cseLab: "C", discreteMath: "A-", eee: "B-", eeeLab: "A+",
+    math: "A+", chemistry: "B", chemistryLab: "A+",
+    sem1: 3.38, sem2: 3.06, finalCgpa: 3.22
+  },
+  "241311132": {
+    name: "MD. ASHIQUR RAHMAN", roll: "241311132", section: "D", cgpa: 2.42,
+    cse: "C", cseLab: "C", discreteMath: "C", eee: "D", eeeLab: "A+",
+    math: "C+", chemistry: "C", chemistryLab: "A-",
+    sem1: 2.39, sem2: 2.42, finalCgpa: 2.40
+  },
+  "241311133": {
+    name: "ATIA SANJIDA SABA", roll: "241311133", section: "D", cgpa: 3.37,
+    cse: "B-", cseLab: "B", discreteMath: "A-", eee: "B+", eeeLab: "A+",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 3.30, sem2: 3.37, finalCgpa: 3.33
+  },
+  "241311134": {
+    name: "MD. FARHAN TANVIR", roll: "241311134", section: "D", cgpa: 3.15,
+    cse: "B-", cseLab: "A", discreteMath: "B+", eee: "C+", eeeLab: "A",
+    math: "A-", chemistry: "B", chemistryLab: "A",
+    sem1: 3.47, sem2: 3.15, finalCgpa: 3.31
+  },
+  "241311135": {
+    name: "MD. FAYSAL MAHMUD", roll: "241311135", section: "D", cgpa: 2.49,
+    cse: "D", cseLab: "C", discreteMath: "C", eee: "D", eeeLab: "A+",
+    math: "C+", chemistry: "B", chemistryLab: "A+",
+    sem1: 2.57, sem2: 2.49, finalCgpa: 2.53
+  },
+  "241311136": {
+    name: "MD. SIFAT ALI", roll: "241311136", section: "D", cgpa: 2.16,
+    cse: "F", cseLab: "D", discreteMath: "D", eee: "D", eeeLab: "A+",
+    math: "B+", chemistry: "C+", chemistryLab: "A+",
+    sem1: 2.5, sem2: 2.16, finalCgpa: 2.33
+  },
+  "241311137": {
+    name: "S. M TOUFIQ SHAHRIAR", roll: "241311137", section: "D", cgpa: 1.7,
+    cse: "F", cseLab: "D", discreteMath: "C+", eee: "F", eeeLab: "A",
+    math: "C+", chemistry: "D", chemistryLab: "A+",
+    sem1: 1.98, sem2: 1.70, finalCgpa: 1.84
+  },
+  "241311138": {
+    name: "MD. MAHFUJ MONIR", roll: "241311138", section: "D", cgpa: 1.63,
+    cse: "F", cseLab: "D", discreteMath: "D", eee: "F", eeeLab: "B-",
+    math: "C+", chemistry: "B", chemistryLab: "B+",
+    sem1: 2.18, sem2: 1.63, finalCgpa: 1.90
+  },
+"241311141": {
+    name: "MD. SANJID ALAM", roll: "241311141", section: "D", cgpa: 3.56,
+    cse: "B", cseLab: "B-", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A+", chemistry: "A+", chemistryLab: "A",
+    sem1: 3.36, sem2: 3.56, finalCgpa: 3.46
+  },
+  "241311142": {
+    name: "RAFIUL ISLAM RAFI", roll: "241311142", section: "D", cgpa: 3.36,
+    cse: "B-", cseLab: "B-", discreteMath: "A-", eee: "B", eeeLab: "A+",
+    math: "A+", chemistry: "A-", chemistryLab: "A+",
+    sem1: 3.32, sem2: 3.36, finalCgpa: 3.34
+  },
+  "241311143": {
+    name: "MD. ABU BOKOR SIDDIK", roll: "241311143", section: "D", cgpa: 2.58,
+    cse: "D", cseLab: "C", discreteMath: "B-", eee: "D", eeeLab: "A-",
+    math: "B", chemistry: "B-", chemistryLab: "A-",
+    sem1: 2.99, sem2: 2.58, finalCgpa: 2.78
+  },
+  "241311144": {
+    name: "MD. SOUROV HOSSAIN ANIK", roll: "241311144", section: "D", cgpa: 3.34,
+    cse: "B", cseLab: "B+", discreteMath: "B+", eee: "A-", eeeLab: "A+",
+    math: "A-", chemistry: "B", chemistryLab: "A",
+    sem1: 3.30, sem2: 3.34, finalCgpa: 3.32
+  },
+  "241311145": {
+    name: "MST. MAHARUN NASHA QUEEN", roll: "241311145", section: "D", cgpa: 2.28,
+    cse: "F", cseLab: "C", discreteMath: "C+", eee: "D", eeeLab: "A-",
+    math: "A-", chemistry: "C+", chemistryLab: "A+",
+    sem1: 2.45, sem2: 2.28, finalCgpa: 2.36
+  },
+  "241311147": {
+    name: "ANSARULLAH THOHOR", roll: "241311147", section: "D", cgpa: 3.93,
+    cse: "A+", cseLab: "A+", discreteMath: "A", eee: "A+", eeeLab: "A+",
+    math: "A+", chemistry: "A", chemistryLab: "A-",
+    sem1: 3.84, sem2: 3.93, finalCgpa: 3.88
+  },
+  "241311148": {
+    name: "MD. FARHAN ABID SARDER", roll: "241311148", section: "D", cgpa: 2.40,
+    cse: "D", cseLab: "F", discreteMath: "B+", eee: "C", eeeLab: "B+",
+    math: "C+", chemistry: "C+", chemistryLab: "A",
+    sem1: 1.64, sem2: 2.40, finalCgpa: 2.02
+  },
+  "241311149": {
+    name: "MST. ROMAIWA SABNIN", roll: "241311149", section: "D", cgpa: 3.67,
+    cse: "B", cseLab: "B", discreteMath: "A", eee: "A+", eeeLab: "A+",
+    math: "A+", chemistry: "A+", chemistryLab: "A-",
+    sem1: 3.62, sem2: 3.67, finalCgpa: 3.64
+  },
+  "241311153": {
+    name: "SAJJAD HOSSEN", roll: "241311153", section: "D", cgpa: 3.66,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A-", eeeLab: "A+",
+    math: "A+", chemistry: "A-", chemistryLab: "A-",
+    sem1: 3.76, sem2: 3.66, finalCgpa: 3.71
+  },
+  "241311154": {
+    name: "MD. MAHFUZUR RAHMAN", roll: "241311154", section: "D", cgpa: 2.12,
+    cse: "D", cseLab: "C", discreteMath: "B-", eee: "F", eeeLab: "A+",
+    math: "C+", chemistry: "C", chemistryLab: "A-",
+    sem1: 3.11, sem2: 2.12, finalCgpa: 2.61
+  },
+  "241311155": {
+    name: "SAFWAN ALAM", roll: "241311155", section: "D", cgpa: 1.91,
+    cse: "D", cseLab: "D", discreteMath: "C", eee: "D", eeeLab: "C+",
+    math: "D", chemistry: "F", chemistryLab: "B+",
+    sem1: 1.92, sem2: 1.91, finalCgpa: 1.91
+  },
+  "241311156": {
+    name: "DIPANNITA ROY DUTTI", roll: "241311156", section: "D", cgpa: 3.36,
+    cse: "B-", cseLab: "B+", discreteMath: "A-", eee: "B-", eeeLab: "A+",
+    math: "A+", chemistry: "A-", chemistryLab: "A+",
+    sem1: 3.46, sem2: 3.36, finalCgpa: 3.41
+  },
+  "241311157": {
+    name: "ADNAN SAMI", roll: "241311157", section: "D", cgpa: 1.63,
+    cse: "F", cseLab: "D", discreteMath: "C+", eee: "F", eeeLab: "B+",
+    math: "C", chemistry: "C+", chemistryLab: "B",
+    sem1: 2.12, sem2: 1.63, finalCgpa: 1.87
+  },
+  "241311158": {
+    name: "MD. NURAIN HOSSEN NEHAL", roll: "241311158", section: "D", cgpa: 3.16,
+    cse: "B", cseLab: "B+", discreteMath: "B-", eee: "C+", eeeLab: "A+",
+    math: "A", chemistry: "B+", chemistryLab: "A+",
+    sem1: 3.21, sem2: 3.16, finalCgpa: 3.18
+  },
+  "241311159": {
+    name: "MD. JABIR HOSSAIN", roll: "241311159", section: "D", cgpa: 1.54,
+    cse: "F", cseLab: "C", discreteMath: "C", eee: "D", eeeLab: "A-",
+    math: "F", chemistry: "D", chemistryLab: "B+",
+    sem1: 1.39, sem2: 1.54, finalCgpa: 1.46
+  },
+  "241311160": {
+    name: "JUNAID MOSTOFA NADIM", roll: "241311160", section: "D", cgpa: 1.17,
+    cse: "F", cseLab: "D", discreteMath: "F", eee: "F", eeeLab: "A-",
+    math: "D", chemistry: "C", chemistryLab: "A-",
+    sem1: 2.28, sem2: 1.17, finalCgpa: 1.72
+  },
+  
+  
+// E Section 
+  "241311161": {
+    name: "ESRAT JAHAN EVA", roll: "241311161", section: "E", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "B+", eeeLab: "A",
+    math: "A-", chemistry: "B+", chemistryLab: "A",
+    sem1: 2.39, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311162": {
+    name: "GOLAP SARKAR", roll: "241311162", section: "E", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A-", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A-",
+    sem1: 3.23, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311163": {
+    name: "MD. RAFIUL ISLAM SHAWON", roll: "241311163", section: "E", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 3.32, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311164": {
+    name: "MD. MAHMUDUL HASAN", roll: "241311164", section: "E", cgpa: 3.7,
+    cse: "A-", cseLab: "B+", discreteMath: "A", eee: "B", eeeLab: "A",
+    math: "A-", chemistry: "B+", chemistryLab: "A",
+    sem1: 0.00, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311165": {
+    name: "MOST. ARIFA AKTER", roll: "241311165", section: "E", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A-",
+    sem1: 1.43, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311168": {
+    name: "MD. TOHIDUL ISLAM NAHID", roll: "241311168", section: "E", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A-",
+    sem1: 1.49, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311170": {
+    name: "MD. ROBAYET JAHAN SHAFA", roll: "241311170", section: "E", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 1.99, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311171": {
+    name: "MD. TOUSIF RAHMAN", roll: "241311171", section: "E", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "B+", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "B+",
+    sem1: 0.53, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311172": {
+    name: "MST. AFROZA BANU AINA", roll: "241311172", section: "E", cgpa: 3.7,
+    cse: "A", cseLab: "A-", discreteMath: "B", eee: "A", eeeLab: "B+",
+    math: "A-", chemistry: "A", chemistryLab: "A",
+    sem1: 3.73, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311174": {
+    name: "MD. AL IMRAN", roll: "241311174", section: "E", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 1.03, sem2: 3.9, finalCgpa: 3.9
+  },
+  "241311175": {
+    name: "MD. MAHIN RAHMAN", roll: "241311175", section: "E", cgpa: 3.8,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A-", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 3.10, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311176": {
+    name: "MD. ARIFUZZAMAN EVO", roll: "241311176", section: "E", cgpa: 3.7,
+    cse: "A-", cseLab: "B", discreteMath: "A-", eee: "A", eeeLab: "A",
+    math: "A-", chemistry: "A", chemistryLab: "B+",
+    sem1: 1.36, sem2: 3.8, finalCgpa: 3.7
+  },
+  "241311177": {
+    name: "SUMAIYA KHAN", roll: "241311177", section: "E", cgpa: 3.8,
+    cse: "A", cseLab: "A-", discreteMath: "A", eee: "B+", eeeLab: "A",
+    math: "A", chemistry: "A-", chemistryLab: "A",
+    sem1: 0.76, sem2: 3.9, finalCgpa: 3.8
+  },
+  "241311180": {
+    name: "MD. HASAN ALI", roll: "241311180", section: "E", cgpa: 3.9,
+    cse: "A", cseLab: "A", discreteMath: "A", eee: "A", eeeLab: "A",
+    math: "A", chemistry: "A", chemistryLab: "A",
+    sem1: 1.97, sem2: 3.9, finalCgpa: 3.9
+  }
+};
+
+    // Search Functionality
+    function searchResult() {
+      const roll = document.getElementById("rollInput").value.trim();
+      const resultSection = document.getElementById("resultSection");
+
+      if (results[roll]) {
+        const data = results[roll];
+        document.getElementById("name").innerText = data.name;
+        document.getElementById("roll").innerText = data.roll;
+        document.getElementById("section").innerText = data.section;
+        document.getElementById("cgpa").innerText = data.cgpa;
+        document.getElementById("cse").innerText = data.cse;
+        document.getElementById("cseLab").innerText = data.cseLab;
+        document.getElementById("discreteMath").innerText = data.discreteMath;
+        document.getElementById("eee").innerText = data.eee;
+        document.getElementById("eeeLab").innerText = data.eeeLab;
+        document.getElementById("math").innerText = data.math;
+        document.getElementById("chemistry").innerText = data.chemistry;
+        document.getElementById("chemistryLab").innerText = data.chemistryLab;
+        document.getElementById("sem1").innerText = data.sem1;
+        document.getElementById("sem2").innerText = data.sem2;
+        document.getElementById("finalCgpa").innerText = data.finalCgpa;
+
+        resultSection.style.display = "block";
+      } else {
+        alert("No result found for this ID number.");
+        resultSection.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
