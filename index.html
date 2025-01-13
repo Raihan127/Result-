@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Result</title>
   <style>
-    body {
+body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #d4e9ff, #ffffff);
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d4e9ff, #ffffff);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,16 +18,23 @@
       width: 90%;
       max-width: 600px;
       background: #ffffff;
-      padding: 20px;
+      padding: 24px;
       border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
       text-align: center;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+    .container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+   }
+   
     .logo {
       font-size: 30px;
       font-weight: bold;
-      color: #A52A2A;
+      color: #070c53;
       margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
     .logo span {
       color: #0056b3;
@@ -42,10 +49,16 @@
       padding: 12px;
       margin: 10px 0;
       border: 2px solid #007bff;
-      border-radius: 10px;
+      border-radius: 11px;
       font-size: 16px;
       outline: none;
+       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
+    input[type="number"]:focus {
+    border-color: #4682B4;
+    box-shadow: 0 0 8px rgba(4, 5, 54, 0.5);
+}
+    
     button {
       background-color: #007bff;
       color: white;
@@ -55,6 +68,7 @@
       font-size: 16px;
       cursor: pointer;
       margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(1, 9, 44, 0.4);
     }
     button:hover {
       background-color: #0056b3;
@@ -64,8 +78,8 @@
       display: none;
       padding: 20px;
       border-radius: 20px;
-      background: linear-gradient(to bottom, #d4e9ff, #ffffff); /* Same as body background */
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+     background: linear-gradient(to bottom, #f5f7fa, #c3cfe2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
     .result table {
       width: 100%;
@@ -77,11 +91,11 @@
     .result table th,
     .result table td {
       border: 1px solid #ddd;
-      padding: 12px;
+      padding: 13px;
       font-size: 14px;
     }
     .result table th {
-      background-color: #007bff;
+      background-color: #4682B4;
       color: white;
     }
     .result table td {
@@ -91,18 +105,18 @@
     .result table td.bold {
       font-weight: bold;
     }
-    .highlight-light {
-      background-color: #f0f8ff;
+    .highlight-sem {
+      color: #483D8B;
     }
-    .highlight-green {
-      background-color: #eafaf1;
+    .highlight-final {
+      color: #2E8B57;
     }
     .footer {
       margin-top: 20px;
       font-size: 12px;
       color: #666;
     }
-  </style>
+    </style>
 </head>
 <body>
   <div class="container">
@@ -169,19 +183,19 @@
         <tr>
           <td>Chemistry Lab</td>
           <td id="chemistryLab"></td>
-        </tr>
-        <tr class="highlight-light">
-          <td>1st Semester CGPA</td>
-          <td id="sem1"></td>
-        </tr>
-        <tr class="highlight-light">
-          <td>2nd Semester CGPA</td>
+        </tr>        
+         <tr class="highlight-sem">
+          <td>1st Semester CGPA</td> 
+          <td id="sem1"></td> 
+        </tr> 
+        <tr class="highlight-sem"> 
+          <td>2nd Semester CGPA</td> 
           <td id="sem2"></td>
-        </tr>
-        <tr class="highlight-green">
-          <td>Final CGPA</td>
-          <td id="finalCgpa"></td>
-        </tr>
+        </tr> 
+        <tr class="highlight-final"> 
+          <td>Final CGPA</td> 
+          <td id="finalCgpa"></td> 
+        </tr> 
       </table>
     </div>
 
